@@ -62,6 +62,7 @@ counts = data.groupby(['year', 'month'])['pid'].count()
 # Plot the results
 counts.plot(kind='bar', figsize = (12,4))
 ```
+<img width="967" alt="Screen Shot 2023-04-09 at 21 46 29" src="https://user-images.githubusercontent.com/86967515/231145947-d4fbd269-3b5d-4e3d-a490-adde311d1f48.png">
 
 ## 5. Is there camaraderie in the project?
 <p>The organizational structure varies from one project to another, and it can influence your success as a contributor. A project that has a very small community might not be the best one to start working on. The small community might indicate a high barrier of entry. This can be caused by several factors, including a community that is reluctant to accept pull requests from "outsiders," that the code base is hard to work with, etc. However, a large community can serve as an indicator that the project is regularly accepting pull requests from new contributors. Such a project would be a good place to start.</p>
@@ -77,6 +78,7 @@ by_user = data.groupby('user').agg({'pid':'count'})
 # Plot the histogram
 by_user.hist()
 ```
+<img width="564" alt="Screen Shot 2023-04-09 at 21 46 59" src="https://user-images.githubusercontent.com/86967515/231145943-ad449ef6-0831-41fd-8cf5-1d551f9fce22.png">
 
 ## 6. What files were changed in the last ten pull requests?
 <p>Choosing the right place to make a contribution is as important as choosing the project to contribute to. Some parts of the code might be stable, some might be dead. Contributing there might not have the most impact. Therefore it is important to understand the parts of the system that have been recently changed. This allows us to pinpoint the "hot" areas of the code where most of the activity is happening. Focusing on those parts might not the most effective use of our times.</p>
@@ -94,6 +96,7 @@ files = set(joined_pr['file'])
 # Print the results
 files
 ```
+<img width="578" alt="Screen Shot 2023-04-09 at 21 47 41" src="https://user-images.githubusercontent.com/86967515/231145938-27b70977-d635-4185-8532-95c49e659654.png">
 
 ## 7. Who made the most pull requests to a given file?
 <p>When contributing to a project, we might need some guidance. We might find ourselves needing some information regarding the codebase. It is important direct any questions to the right person. Contributors to open source projects generally have other day jobs, so their time is limited. It is important to address our questions to the right people. One way to identify the right target for our inquiries is by using their contribution history.</p>
@@ -112,6 +115,7 @@ author_counts = file_pr.groupby('user').count()
 # Print the top 3 developers
 author_counts.nlargest(3, 'file')
 ```
+<img width="983" alt="Screen Shot 2023-04-09 at 21 48 19" src="https://user-images.githubusercontent.com/86967515/231145935-d0246b88-4b18-484c-ba75-b25dd23a6b9e.png">
 
 ## 8. Who made the last ten pull requests on a given file?
 <p>Open source projects suffer from fluctuating membership. This makes the problem of finding the right person more challenging: the person has to be knowledgeable <em>and</em> still be involved in the project. A person that contributed a lot in the past might no longer be available (or willing) to help. To get a better understanding, we need to investigate the more recent history of that particular part of the system. </p>
@@ -132,6 +136,7 @@ users_last_10 = set(joined_pr.nlargest(10, 'date')['user'])
 # Printing the results
 users_last_10
 ```
+<img width="584" alt="Screen Shot 2023-04-09 at 21 49 03" src="https://user-images.githubusercontent.com/86967515/231145933-ec1eeffb-1c47-4ef1-a0e8-610c266f5230.png">
 
 ## 9. The pull requests of two special developers
 <p>Now that we have identified two potential contacts in the projects, we need to find the person who was most involved in the project in recent times. That person is most likely to answer our questions. For each calendar year, we are interested in understanding the number of pull requests the authors submitted. This will give us a high-level image of their contribution trend to the project.</p>
@@ -154,6 +159,7 @@ counts_wide = counts.pivot_table(index='date', columns='user', values='pid', fil
 # Plot the results
 counts_wide.plot(kind='bar')
 ```
+<img width="584" alt="Screen Shot 2023-04-09 at 21 50 27" src="https://user-images.githubusercontent.com/86967515/231145931-2d855691-2811-4b5f-aefa-b2226a3739d2.png">
 
 ## 10. Visualizing the contributions of each developer
 <p>As mentioned before, it is important to make a distinction between the global expertise and contribution levels and the contribution levels at a more granular level (file, submodule, etc.) In our case, we want to see which of our two developers of interest have the most experience with the code in a given file. We will measure experience by the number of pull requests submitted that affect that file and how recent those pull requests were submitted.</p>
@@ -172,8 +178,9 @@ by_file = by_author[by_author['file'] == file]
 grouped = by_file.groupby(['user', by_file['date'].dt.year]).count()['pid'].reset_index()
 
 # Transform the data into a wide format
-by_file_wide = ...
+by_file_wide = grouped.pivot(index='user', columns='date', values='pid')
 
 # Plot the results
 by_file_wide.plot(kind='bar')
 ```
+<img width="555" alt="Screen Shot 2023-04-09 at 21 50 45" src="https://user-images.githubusercontent.com/86967515/231145925-5fa5af69-7a56-4250-bb57-a59a6a3be919.png">
